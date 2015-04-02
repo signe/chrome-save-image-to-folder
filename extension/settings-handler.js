@@ -1,25 +1,30 @@
-jQuery(document).ready(function() {
-    var count = 0;
-    var folders = {};
-    var folders = JSON.parse(localStorage.getItem('folders'));
-    for (var i = 0; i < Object.keys(folders).length; i++) {
-        jQuery('.folder-list').append("<div class='folder-elem' id='"+i+"'>"+
-            "Folder <input type='input' name='num' class='num' value='"+(i+1)+"' size='4' />: "+
-            "<input type='input' name='folders[]' "+
-            "id='"+i+"' class='folder' value='"+folders[i]+"' />"+
-            "&nbsp;<input type='submit' class='minus' value='-' /></div>");
-    }
-    minus_click();
-    change_num();
+var count = 0;
+var folders = {};
+chrome.storage.sync.get('folders', function(obj) { 
+    if (obj.folders) {
+        folders = JSON.parse(obj.folders);
 
-    var total = Object.keys(folders).length
-    jQuery('input.folder').each(function() {
-        if (count >= Object.keys(folders).length) {
-            jQuery(this).val("");
-        } else {
-            jQuery(this).val(folders[count++]);
+        for (var i = 0; i < Object.keys(folders).length; i++) {
+            jQuery('.folder-list').append("<div class='folder-elem' id='"+i+"'>"+
+                "Folder <input type='input' name='num' class='num' value='"+(i+1)+"' size='4' />: "+
+                "<input type='input' name='folders[]' "+
+                "id='"+i+"' class='folder' value='"+folders[i]+"' />"+
+                "&nbsp;<input type='submit' class='minus' value='-' /></div>");
         }
-    });
+        minus_click();
+        change_num();
+
+        var total = Object.keys(folders).length
+        jQuery('input.folder').each(function() {
+            if (count >= Object.keys(folders).length) {
+                jQuery(this).val("");
+            } else {
+                jQuery(this).val(folders[count++]);
+            }
+        });
+    } else {
+        var total = 0;
+    }
 
     jQuery('input.add').click(function() {
         jQuery('.folder-list').append("<div id='"+total+"'>"+
@@ -38,7 +43,7 @@ jQuery(document).ready(function() {
             if (jQuery(this).val() != "")
                 save[count++] = jQuery(this).val();
         });
-        localStorage.setItem('folders',JSON.stringify(save));
+        chrome.storage.sync.set({'folders': JSON.stringify(save)});
         chrome.runtime.reload();
     });
 });

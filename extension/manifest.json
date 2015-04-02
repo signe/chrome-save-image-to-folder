@@ -18,6 +18,7 @@
    "options_page":"settings.html",
    "permissions": [ 
       "contextMenus",
-      "downloads"
+      "downloads",
+      "storage"
    ]
 }
