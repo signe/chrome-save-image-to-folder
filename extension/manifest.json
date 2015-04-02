@@ -1,20 +1,18 @@
 {
    "name": "Save Image to Folder",
-   "version": "0.1",
+   "version": "0.1.1",
    "manifest_version": 2,
-   "description": "Adds a right-click menu to save images to folders.",
+   "description": "Adds a right-click menu to save images to specific download folders.",
 
    "background": {
       "scripts": [ "background.js" ],
       "persistant": false
    },
-/*
    "icons": {
       "128": "icon128.png",
       "16": "icon16.png",
       "48": "icon48.png"
    },
-*/
    "options_page":"settings.html",
    "permissions": [ 
       "contextMenus",
